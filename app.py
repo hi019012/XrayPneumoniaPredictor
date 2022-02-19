@@ -21,7 +21,7 @@ def predict():
     print('Request body: \n', data)
     image_in_base64 = data['image']
 
-    # Predict the handwritten digit in the image using predict_digit_in_base64().
+    # Predict the digit in the image using predict_digit_in_base64().
     predicted_digit, prediction = predict_digit_in_base64(image_in_base64)
 
     # Create a response in JSON.
