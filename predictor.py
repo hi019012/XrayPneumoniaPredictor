@@ -11,28 +11,25 @@ def predict_digit(image_in_binary):
     # Create an Image object from image_in_binary.
     image = Image.open(io.BytesIO(image_in_binary))
 
-    # If the image size is NOT 28x28, resize to 28x28.
-    # 変更
+    # If the image size is NOT 116x82, resize to 116x82.
     print('Original size: ', image.size)
     if image.size != (116,82):
         image = image.resize((116,82))
     print('Reshaped size: ',image.size)
 
-    # 変更
     # If the image mode is NOT gray-scale, convert RGB to gray-scale.
+    
     print('Original mode: ', image.mode)
     if image.mode != 'RGB' and image.mode != '1':
         image = image.convert('RGB')
     print('Converted mode: ', image.mode)
-
-    # Create a numpy array in the shape of (1, 28, 28).
+    
+    # Create a numpy array in the shape of (1, 116, 82, 3).
     # 変更
     image_array = np.array(image).reshape(1, 116, 82, 3)
     image_array = image_array / 255.0
-    # Predict the probability list for 10 digits using the trained MNIST model,
-    # and select the most probable digit.
     
-    # 変更
+    
     predictions = model.predict(image_array)
     predictions = predictions*100
     if(predictions < 50):
@@ -42,16 +39,9 @@ def predict_digit(image_in_binary):
 
     print('Predictions: ', predictions)
 
-    # Return the most probable digit and the probability list for 10 digits.
+    # Return the most probable digit and the probability list.
     return predicted_digits, predictions[0].tolist()
     
-    """
-    predictions = model.predict(image_array)
-    predicted_digits = np.argmax(predictions, axis=1)
-    print('Predictions: ', predictions)
-    # Return the most probable digit and the probability list for 10 digits.
-    return (int)(predicted_digits[0]), predictions[0].tolist()
-    """
 
 def predict_digit_in_base64(image_in_base64):
     # Decode the image data in base64 to the original binary data.

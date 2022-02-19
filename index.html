@@ -23,26 +23,12 @@
             Predicted Digit: <label id="predicted-digit" style="color:darkred;font-size:48px;"></label><br/>
             Probability of pneumonia: <label id="prediction" style="font-size: 30;"></label> %
     </body>
+</html>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
-    <script>
-        var URL_PREDICTION = '/predictions';
-        //var DRAWING_LINE_WIDTH = 20;
-        //var DRAWING_STROKE_STYLE = 'yellow';
-        //var ctx = $('#canvas')[0].getContext('2d');
-
-        /*
-        function drawFromFile(e) {
-            console.log('drawFromFile() called.');
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            var image = new Image();
-            image.onload = () => {
-                ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, ctx.canvas.width, ctx.canvas.height);
-            }
-            image.src = URL.createObjectURL(e.target.files[0]);
-        }
-        */
+<script>
+        var URL_PREDICTION = '/predictions'
 
         $('#file').on('change', function (e) {
             var reader = new FileReader();
@@ -54,50 +40,17 @@
             reader.readAsDataURL(e.target.files[0]);
         });
 
-        /*
-        var prevX, prevY;
-        var mousePressed = false;
-        function drawByMouse(x, y, isDown) {
-            if (isDown) {
-                ctx.beginPath();
-                ctx.strokeStyle = DRAWING_STROKE_STYLE;
-                ctx.lineWidth = DRAWING_LINE_WIDTH;
-                ctx.lineJoin = "round";
-                ctx.moveTo(prevX, prevY);
-                ctx.lineTo(x, y);
-                ctx.closePath();
-                ctx.stroke();
-            }
-            prevX = x;
-            prevY = y;
-        }
-        */
-
-        /*
-        function clearCanvas() {
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            $('#file')[0].value = null;
-            $('#predicted-digit')[0].textContent = '';
-            $('#response-body')[0].textContent = '';
-        }
-        */
+        
 
         function postPredictionRequest() {
             console.log('postPredictionRequest() called.');
 
-            /*
-            // Retrieve the image data from canvas.
-            dataURL = img.toDataURL('image/png');
-            // Remove the unnecessary header which is something like 'data:image/png;base64,'.
-            imageInBase64 = dataURL.replace(/^.*,/, '');
-            */
+            
             
             dataURL = img.src;
             imageInBase64 = dataURL.replace(/^.*,/, '');
             
-            // Create a request body.
-            //var requestBody = {};
-            //requestBody['image'] = imageInBase64;
+            
             
             var requestBody = {};
             requestBody['image'] = imageInBase64;
@@ -112,7 +65,6 @@
                         console.log(responseInText);
                         var responseInJson = JSON.parse(responseInText);
                         $('#predicted-digit')[0].textContent = responseInJson['predictedDigit'];
-                        //$('#response-body')[0].textContent = responseInText;
                         $('#prediction')[0].textContent = responseInJson['prediction'];
                     } else {
                         alert('Oops! Something went wrong. \nStatus: '
@@ -128,41 +80,11 @@
         }
 
 
-        /*
-        $('#clear').click(() => {
-            clearCanvas();
-        });
-        */
-
-        /*
-        $('#file').change((e) => {
-            drawFromFile(e);
-        });
-        */
+        
 
         $('#predict').click(() => {
             postPredictionRequest();
         });
 
-        /*
-        $('#canvas').mousedown(function(e) {
-            mousePressed = true;
-            drawByMouse(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false);
-        });
-
-        $('#canvas').mousemove(function(e) {
-            if (mousePressed) {
-                drawByMouse(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true);
-            }
-        });
-
-        $('#canvas').mouseup(function(e) {
-            mousePressed = false;
-        });
-
-        $('#canvas').mouseleave(function(e) {
-            mousePressed = false;
-        });
-        */
-    </script>
-</html>
+        
+</script>
