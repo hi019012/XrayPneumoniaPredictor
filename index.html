@@ -15,7 +15,7 @@
         </div>
             <br />
         <div class="selectedimg">
-            <img id="aaa" width="200" height="200"/>
+            <img id="imgshow" width="200" height="200"/>
         </div>
             <br />
             <button id="predict" style="font-size:24px;">Predict</button><br/>
@@ -33,25 +33,19 @@
         $('#file').on('change', function (e) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $("#aaa").attr('src', e.target.result);
+                $("#imgshow").attr('src', e.target.result);
                 img = new Image();
                 img.src = this.result;
             }
             reader.readAsDataURL(e.target.files[0]);
         });
 
-        
-
         function postPredictionRequest() {
             console.log('postPredictionRequest() called.');
 
-            
-            
             dataURL = img.src;
             imageInBase64 = dataURL.replace(/^.*,/, '');
-            
-            
-            
+                     
             var requestBody = {};
             requestBody['image'] = imageInBase64;
             console.log(requestBody);
@@ -77,14 +71,10 @@
             xhr.open('POST', URL_PREDICTION);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(requestBody));
-        }
-
-
-        
+        }        
 
         $('#predict').click(() => {
             postPredictionRequest();
         });
-
         
 </script>

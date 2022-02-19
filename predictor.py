@@ -23,7 +23,7 @@ def predict_digit(image_in_binary):
     if image.mode != 'RGB' and image.mode != '1':
         image = image.convert('RGB')
     print('Converted mode: ', image.mode)
-    
+
     # Create a numpy array in the shape of (1, 116, 82, 3).
     # 変更
     image_array = np.array(image).reshape(1, 116, 82, 3)
@@ -51,14 +51,15 @@ def predict_digit_in_base64(image_in_base64):
     return predict_digit(image_in_binary)
 
 if __name__ == '__main__':
-    # Predict the handwritten digit in a PNG image file.
+
+    # Predict the digit in a PNG image file.
     with open('data/digit-2-in-100x100x3.png', 'rb') as f:
         image_in_binary = f.read()
         predicted_digit, prediction = predict_digit(image_in_binary)
         print('Predicted digit: ', predicted_digit)
         print('Prediction details: ', prediction)
 
-    # Predict the handwritten digit in a base64 text file encoded from PNG data.
+    # Predict the digit in a base64 text file encoded from PNG data.
     with open('data/digit-2-in-100x100x3.txt', 'r') as f:
         image_in_base64 = f.read()
         predicted_digit, prediction = predict_digit_in_base64(image_in_base64)
