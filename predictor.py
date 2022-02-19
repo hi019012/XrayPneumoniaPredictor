@@ -17,7 +17,7 @@ def predict_digit(image_in_binary):
         image = image.resize((116,82))
     print('Reshaped size: ',image.size)
 
-    # If the image mode is NOT gray-scale, convert RGB to gray-scale.
+    # If the image mode is NOT RGB, convert gray-scale to RGB.
     
     print('Original mode: ', image.mode)
     if image.mode != 'RGB' and image.mode != '1':
