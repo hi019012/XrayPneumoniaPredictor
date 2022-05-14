@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>機械学習</title>
+    </head>
+    <style>
+        h1{text-align: center;}
+        body{text-align: center;}
+    </style>
+    <body>
+            <h1>X-ray | NORMAL OR PNEMONIA</h1>
+        <div class="select">
+            <input type="file" id="file" name="file" style="font-size:24px;"></input>
+        </div>
+            <br />
+        <div class="selectedimg">
+            <img id="imgshow" width="200" height="200"/>
+        </div>
+            <br />
+            <button id="predict" style="font-size:24px;">Predict</button><br/>
+            <p>0: 正常 | 1: 肺炎</p>
+            Predicted Digit: <label id="predicted-digit" style="color:darkred;font-size:48px;"></label><br/>
+            Probability of pneumonia: <label id="prediction" style="font-size: 30;"></label> %
+    </body>
+</html>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+<script>
+        var URL_PREDICTION = '/predictions'
+
+        $('#file').on('change', function (e) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#imgshow").attr('src', e.target.result);
+                img = new Image();
+                img.src = this.result;
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        });
+
+        function postPredictionRequest() {
+            console.log('postPredictionRequest() called.');
+
+            dataURL = img.src;
+            imageInBase64 = dataURL.replace(/^.*,/, '');
+                     
+            var requestBody = {};
+            requestBody['image'] = imageInBase64;
+            console.log(requestBody);
+            
+            // Set a callback function to handle the response.
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = () => { 
+                if (xhr.readyState == 4){
+                    if(xhr.status == 200){
+                        var responseInText = xhr.responseText;
+                        console.log(responseInText);
+                        var responseInJson = JSON.parse(responseInText);
+                        $('#predicted-digit')[0].textContent = responseInJson['predictedDigit'];
+                        $('#prediction')[0].textContent = responseInJson['prediction'];
+                    } else {
+                        alert('Oops! Something went wrong. \nStatus: '
+                                + xhr.status + '\n' + xhr.responseText);
+                    }
+                }
+            }
+
+            // POST /prediction.
+            xhr.open('POST', URL_PREDICTION);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(requestBody));
+        }        
+
+        $('#predict').click(() => {
+            postPredictionRequest();
+        });
+        
+</script>
