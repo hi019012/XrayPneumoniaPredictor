@@ -5,7 +5,7 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 
 # Load the trained MNIST model.
-model = load_model('./model.h5')
+model = load_model('flask/model.h5')
 
 def predict_digit(image_in_binary):
     # Create an Image object from image_in_binary.
